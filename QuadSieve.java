@@ -3,10 +3,11 @@ import java.math.*;
 import java.util.*;
 
 public class QuadSieve {
-    BigInteger N = new BigInteger("235616869893895625763911");
-    int Fbelopp = 1<<10;
-    int L = Fbelopp + 10;
+    BigInteger N = new BigInteger("16637");
+    int Fbelopp = 10;
+    int L = Fbelopp + 2;
     int[][] matrix = new int[L][Fbelopp];
+    BigInteger[] rs = new BigInteger[L];
     ArrayList<boolean[]> solutions = new ArrayList<boolean[]>(); 
     ArrayList<Integer> primes = new ArrayList<Integer>();
     
@@ -117,7 +118,8 @@ outer:  for (int i = 0; i < nSolutions; i++) {
 outer:  for (int i = 1; true; i++) {
 inner:      for (int j = 1; j < limit; j++) {
                 BigInteger r = Rgen(i, j);
-                int[] theRow = factor(r);
+                BigInteger r2 = r.multiply(r).mod(N);
+                int[] theRow = factor(r2);
                 if (theRow == null)
                     continue;
                 
@@ -137,6 +139,7 @@ inner:      for (int j = 1; j < limit; j++) {
                 for (int c = 0; c < Fbelopp; c++) {
                     matrix[row][c] = theRow[c];
                 }
+                rs[row] = r;
                 row++;
                 if (row == L) {
                     break outer;
